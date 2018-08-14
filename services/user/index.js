@@ -140,5 +140,5 @@ module.exports = function (app) {
     app.post('/api/user/:followerId/unfollow/user/:followeeId', unfollowUser);
     app.post('/api/user/:userId/follow/eventlist/:eventlistId', followEventlist);
     app.post('/api/user/:userId/unfollow/eventlist/:eventlistId', unfollowEventlist);
-    app.post('/api/user/:userId/comments', findAllCommentsByUser);
+    app.get('/api/user/:userId/comments', findAllCommentsByUser);
 };
