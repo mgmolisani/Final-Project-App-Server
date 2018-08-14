@@ -48,7 +48,10 @@ function unfollowEventlist(userId, eventlistId) {
 
 function findAllCommentsForUser(userId) {
     return userModel.findById(userId)
-        .populate('comments')
+        .populate({
+            path: 'comments',
+            populate: {path: 'forEvent'}
+        })
         .then((user => {
             return user.comments;
         }));

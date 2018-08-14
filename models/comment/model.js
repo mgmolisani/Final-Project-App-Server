@@ -22,10 +22,15 @@ function deleteComment(commentId) {
     return commentModel.findByIdAndRemove(commentId);
 }
 
+function findAllCommentsForEvent(eventId) {
+    return commentModel.find({forEvent: eventId});
+}
+
 module.exports = {
     createComment: createComment,
     findAllComments: findAllComments,
     findCommentById: findCommentById,
     updateComment: updateComment,
-    deleteComment: deleteComment
+    deleteComment: deleteComment,
+    findAllCommentsForEvent: findAllCommentsForEvent
 };

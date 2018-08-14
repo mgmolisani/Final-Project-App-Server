@@ -1,4 +1,5 @@
 const eventModel = require('../../models/event/model');
+const commentModel = require('../../models/comment/model');
 
 function findEventById(req, res) {
     const eventId = req.params['eventId'];
@@ -54,6 +55,13 @@ function findPrivateEvents(req, res) {
         })
 }
 
+function findAllCommentsForEvent(req, res) {
+    commentModel.findAllCommentsForEvent()
+        .then(function (comments) {
+            res.json(comments);
+        })
+}
+
 module.exports = function (app) {
     app.get('/api/event/:eventId', findEventById);
     app.post('/api/event', createEvent);
@@ -62,4 +70,5 @@ module.exports = function (app) {
     app.get('/api/event', findAllEvents);
     app.get('/api/event/public', findPublicEvents);
     app.get('/api/event/private', findPrivateEvents);
+    app.get('/api/event/comments', findAllCommentsForEvent);
 };

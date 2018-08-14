@@ -6,10 +6,6 @@ const eventSchema = mongoose.Schema({
     public: Boolean,
     address: String,
     images: [String],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
     start: [Number],
     end: [Number]
 }, {collection: 'events'});
