@@ -63,5 +63,6 @@ module.exports = {
     findUserByCredentials: findUserByCredentials,
     findFollowersForUser: findFollowersForUser,
     updateUser: updateUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+    findAllCommentsForUser: findAllCommentsForUser
 };
