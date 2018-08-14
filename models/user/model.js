@@ -57,6 +57,14 @@ function findAllCommentsForUser(userId) {
         }));
 }
 
+function findFollowedEventsForUser(userId) {
+    return userModel.findById(userId)
+        .populate('eventlists.followedEvents')
+        .then((user => {
+            return user.eventlists.followedEvents;
+        }));
+}
+
 module.exports = {
     createUser: createUser,
     findAllUsers: findAllUsers,
@@ -69,5 +77,6 @@ module.exports = {
     findFollowersForUser: findFollowersForUser,
     updateUser: updateUser,
     deleteUser: deleteUser,
-    findAllCommentsForUser: findAllCommentsForUser
+    findAllCommentsForUser: findAllCommentsForUser,
+    findFollowedEventsForUser: findFollowedEventsForUser
 };

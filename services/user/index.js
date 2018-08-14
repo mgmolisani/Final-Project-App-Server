@@ -117,11 +117,19 @@ function unfollowEventlist(req, res) {
         })
 }
 
-function findAllCommentsByUser(req, res) {
+function findAllCommentsForUser(req, res) {
     const userId = req.params['userId'];
     userModel.findAllCommentsForUser(userId)
         .then(function (comments) {
             res.json(comments);
+        })
+}
+
+function findFollowedEventsForUser(req, res) {
+    const userId = req.params['userId'];
+    userModel.findFollowedEventsForUser(userId)
+        .then(function (events) {
+            res.json(events);
         })
 }
 
@@ -139,5 +147,6 @@ module.exports = function (app) {
     app.post('/api/user/:followerId/unfollow/user/:followeeId', unfollowUser);
     app.post('/api/user/:userId/follow/eventlist/:eventlistId', followEventlist);
     app.post('/api/user/:userId/unfollow/eventlist/:eventlistId', unfollowEventlist);
-    app.get('/api/user/:userId/comments', findAllCommentsByUser);
+    app.get('/api/user/:userId/comments', findAllCommentsForUser);
+    app.get('/api/user/:userId/events', findFollowedEventsForUser);
 };
