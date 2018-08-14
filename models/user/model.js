@@ -48,8 +48,10 @@ function unfollowEventlist(userId, eventlistId) {
 
 function findAllCommentsForUser(userId) {
     return userModel.findById(userId)
-        .select('comments')
-        .populate('comments');
+        .populate('comments')
+        .then((user => {
+            return user.comments;
+        }));
 }
 
 module.exports = {
