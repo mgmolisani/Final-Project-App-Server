@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const commentSchema = require('./schema');
-const commentModel = mongoose.model('CommentModel', commentSchema);
+const commentModel = mongoose.model('Comment', commentSchema);
 
 function createComment(comment) {
     return commentModel.create(comment);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const eventSchema = require('./schema');
-const eventModel = mongoose.model('EventModel', eventSchema);
+const eventModel = mongoose.model('Event', eventSchema);
 
 function createEvent(event) {
     return eventModel.create(event);

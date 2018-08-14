@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const eventlistSchema = require('./schema');
-const eventlistModel = mongoose.model('EventlistModel', eventlistSchema);
+const eventlistModel = mongoose.model('Eventlist', eventlistSchema);
 
 function createEventlist(eventlist) {
     return eventlistModel.create(eventlist);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const userSchema = require('./schema');
-const userModel = mongoose.model('UserModel', userSchema);
+const userModel = mongoose.model('User', userSchema);
 
 function createUser(user) {
     return userModel.create(user);
@@ -48,8 +48,8 @@ function unfollowEventlist(userId, eventlistId) {
 
 function findAllCommentsForUser(userId) {
     return userModel.findById(userId)
-        .select('comments')
-        .populate('comments');
+        .populate({path: 'comments',
+        select: ''});
 }
 
 module.exports = {
