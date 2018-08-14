@@ -33,7 +33,7 @@ function findFollowersForUser(req, res) {
 }
 
 function findCurrentUser(req, res) {
-    res.json(req.session['currentUser'] || {});
+    res.json(req.session['currentUser']);
 }
 
 function createUser(req, res) {
