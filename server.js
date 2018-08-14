@@ -23,7 +23,7 @@ app.use(session({
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin",
-        ["https://mmolisani-final-project-node.herokuapp.com/api/events"]);
+        ["https://mmolisani-final-project-node.herokuapp.com"]);
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods",
