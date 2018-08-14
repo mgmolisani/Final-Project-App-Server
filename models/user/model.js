@@ -42,8 +42,14 @@ function followEventlist(userId, eventlistId) {
     return userModel.findByIdAndUpdate(userId, {$push: {'eventlists.follows': eventlistId}}, {new: true})
 }
 
-function unfollowEventlist(userid, eventlistId) {
+function unfollowEventlist(userId, eventlistId) {
     return userModel.findByIdAndUpdate(userId, {$pull: {'eventlists.follows': eventlistId}}, {new: true})
+}
+
+function findAllCommentsForUser(userId) {
+    return userModel.findById(userId)
+        .select('comments')
+        .populate('comments');
 }
 
 module.exports = {

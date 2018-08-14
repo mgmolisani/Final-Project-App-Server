@@ -120,9 +120,8 @@ function unfollowEventlist(req, res) {
 function findAllCommentsByUser(req, res) {
     const userId = req.params['userId'];
     userModel.findUserById(userId)
-        .populate('comments')
-        .then(function (user) {
-            res.json(user);
+        .then(function (comments) {
+            res.json(comments);
         })
 }
 
