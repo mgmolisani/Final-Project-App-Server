@@ -117,6 +117,15 @@ function unfollowEventlist(req, res) {
         })
 }
 
+function findAllCommentsByUser(req, res) {
+    const userId = req.params['userId'];
+    userModel.findUserById(userId)
+        .populate('comments')
+        .then(function (user) {
+            res.json(user);
+        })
+}
+
 module.exports = function (app) {
     app.post('/api/login', login);
     app.post('/api/logout', logout);
@@ -131,4 +140,5 @@ module.exports = function (app) {
     app.post('/api/user/:followerId/unfollow/user/:followeeId', unfollowUser);
     app.post('/api/user/:userId/follow/eventlist/:eventlistId', followEventlist);
     app.post('/api/user/:userId/unfollow/eventlist/:eventlistId', unfollowEventlist);
+    app.post('/api/user/:userId/comments', findAllCommentsByUser);
 };
