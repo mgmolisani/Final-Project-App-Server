@@ -4,7 +4,7 @@ const eventSchema = mongoose.Schema({
     name: {type: String, text: true},
     description: {type: String, text: true},
     private: {type: Boolean, default: true},
-    address: String,
+    address: {type: String, text: true},
     image: String,
     start: [Number],
     end: [Number],
