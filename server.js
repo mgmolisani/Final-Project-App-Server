@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const userService = require('./services/user');
-const eventlistService = require('./services/eventlist');
 const eventService = require('./services/event');
 const commentService = require('./services/comment');
 
@@ -23,7 +22,7 @@ app.use(session({
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin",
-        ["http://localhost:3000"]);
+        ["https://mmolisani-final-project-node.herokuapp.com"]);
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods",
@@ -48,7 +47,6 @@ app.get('/api/session/set/:name/:value', setSession);
 app.get('/api/session/get/:name', getSession);
 
 userService(app);
-eventlistService(app);
 eventService(app);
 commentService(app);
 

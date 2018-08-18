@@ -2,11 +2,7 @@ const mongoose = require('mongoose');
 
 const commentSchema = mongoose.Schema({
     content: String,
-    date: [Number],
-    forEvent: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event'
-    }
+    date: [Number]
 }, {collection: 'comments'});
 
 module.exports = commentSchema;

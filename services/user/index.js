@@ -1,5 +1,4 @@
 const userModel = require('../../models/user/model');
-const eventlistModel = require('../../models/eventlist/model');
 
 function login(req, res) {
     const credentials = req.body;
@@ -7,6 +6,15 @@ function login(req, res) {
         .findUserByCredentials(credentials)
         .then(function (user) {
             req.session['currentUser'] = user;
+            res.json(user);
+        })
+}
+
+function findUserByCredentials(req, res) {
+    const credentials = req.body;
+    userModel
+        .findUserByCredentials(credentials)
+        .then(function (user) {
             res.json(user);
         })
 }
@@ -32,27 +40,32 @@ function findFollowersForUser(req, res) {
         })
 }
 
+function findFollowingForUser(req, res) {
+    const userId = req.params['userId'];
+    userModel.findFollowingForUser(userId)
+        .then(function (user) {
+            res.json(user);
+        })
+}
+
 function findCurrentUser(req, res) {
-    res.json(req.session['currentUser']);
+    res.send(req.session['currentUser']);
 }
 
 function createUser(req, res) {
     const user = req.body;
-    Promise.all([
-        eventlistModel.createEventlist({name: user.username + '\'s Created Events'}),
-        eventlistModel.createEventlist({name: user.username + '\'s Followed Events'})])
-        .then(function (eventlists) {
-            Object.assign(user, {
-                eventlists: {
-                    createdEvents: eventlists[0]._id,
-                    followedEvents: eventlists[1]._id
-                }
-            });
-            userModel.createUser(user)
-                .then(function (user) {
-                    req.session['currentUser'] = user;
-                    res.json(user);
-                })
+    userModel.createUser(user)
+        .then(function (user) {
+            res.json(user);
+        })
+}
+
+function registerUser(req, res) {
+    const user = req.body;
+    userModel.createUser(user)
+        .then(function (user) {
+            req.session['currentUser'] = user;
+            res.json(user);
         })
 }
 
@@ -99,19 +112,19 @@ function unfollowUser(req, res) {
         })
 }
 
-function followEventlist(req, res) {
-    const userId = req.params['followerId'];
-    const eventlistId = req.params['followeeId'];
-    userModel.followEventlist(userId, eventlistId)
+function followEvent(req, res) {
+    const userId = req.params['userId'];
+    const eventId = req.params['eventId'];
+    userModel.followEvent(userId, eventId)
         .then(function (user) {
             res.json(user);
         })
 }
 
-function unfollowEventlist(req, res) {
-    const userId = req.params['followerId'];
-    const eventlistId = req.params['followeeId'];
-    userModel.unfollowEventlist(userId, eventlistId)
+function unfollowEvent(req, res) {
+    const userId = req.params['userId'];
+    const eventId = req.params['eventId'];
+    userModel.unfollowEvent(userId, eventId)
         .then(function (user) {
             res.json(user);
         })
@@ -133,20 +146,51 @@ function findFollowedEventsForUser(req, res) {
         })
 }
 
+function findAllEventsForUser(req, res) {
+    const userId = req.params['userId'];
+    userModel.findAllEventsForUser(userId)
+        .then(function (events) {
+            res.json(events);
+        })
+}
+
+function searchForUser(req, res) {
+    const search = req.body.search;
+    userModel.searchForUser(search)
+        .then(function (results) {
+            res.json(results);
+        })
+}
+
+function addInstagramForUser(req, res) {
+    const userId = req.params['userId'];
+    const token = req.body.token;
+    userModel.addInstagramForUser(userId, token)
+        .then(function (user) {
+            res.json(user);
+        })
+}
+
 module.exports = function (app) {
     app.post('/api/login', login);
     app.post('/api/logout', logout);
     app.get('/api/user/:userId', findUserById);
     app.get('/api/profile', findCurrentUser);
     app.post('/api/user', createUser);
+    app.post('/api/register', registerUser);
     app.put('/api/user/:userId', updateUser);
     app.delete('/api/user/:userId', deleteUser);
     app.get('/api/user/', findAllUsers);
     app.get('/api/user/:userId/followers', findFollowersForUser);
-    app.post('/api/user/:followerId/follow/user/:followeeId', followUser);
-    app.post('/api/user/:followerId/unfollow/user/:followeeId', unfollowUser);
-    app.post('/api/user/:userId/follow/eventlist/:eventlistId', followEventlist);
-    app.post('/api/user/:userId/unfollow/eventlist/:eventlistId', unfollowEventlist);
+    app.get('/api/user/:userId/following', findFollowingForUser);
+    app.put('/api/user/:followerId/follow/user/:followeeId', followUser);
+    app.put('/api/user/:followerId/unfollow/user/:followeeId', unfollowUser);
+    app.put('/api/user/:userId/follow/event/:eventId', followEvent);
+    app.put('/api/user/:userId/unfollow/event/:eventId', unfollowEvent);
     app.get('/api/user/:userId/comments', findAllCommentsForUser);
-    app.get('/api/user/:userId/events', findFollowedEventsForUser);
+    app.get('/api/user/:userId/events/following', findFollowedEventsForUser);
+    app.get('/api/user/:userId/events/all', findAllEventsForUser);
+    app.post('/api/user/search', searchForUser);
+    app.put('/api/user/:userId/instagram/access_token', addInstagramForUser);
+    app.post('/api/user/check', findUserByCredentials)
 };

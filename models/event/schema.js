@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 
 const eventSchema = mongoose.Schema({
-    name: String,
-    description: String,
-    public: Boolean,
+    name: {type: String, text: true},
+    description: {type: String, text: true},
+    private: {type: Boolean, default: true},
     address: String,
-    images: [String],
+    image: String,
     start: [Number],
-    end: [Number]
+    end: [Number],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 }, {collection: 'events'});
 
 module.exports = eventSchema;

@@ -30,6 +30,27 @@ function deleteEvent(eventId) {
     return eventModel.findByIdAndRemove(eventId);
 }
 
+function searchForEvent(search) {
+    return eventModel.find({
+        private: false,
+        $text: {$search: search}
+    });
+}
+
+function addComment(eventId, commentId) {
+    return eventModel.findByIdAndUpdate(eventId, {$push: {'comments': commentId}}, {new: true})
+}
+
+function removeComment(commentId) {
+    return eventModel.findOneAndUpdate({'comments': commentId}, {$pull: {'comments': commentId}}, {new: true})
+}
+
+function findAllCommentsForEvent(eventId) {
+    return eventModel.findById(eventId)
+        .populate('comments')
+
+}
+
 module.exports = {
     createEvent: createEvent,
     findAllEvents: findAllEvents,
@@ -37,5 +58,9 @@ module.exports = {
     findPublicEvents: findPublicEvents,
     findPrivateEvents: findPrivateEvents,
     updateEvent: updateEvent,
-    deleteEvent: deleteEvent
+    deleteEvent: deleteEvent,
+    searchForEvent: searchForEvent,
+    addComment: addComment,
+    findAllCommentsForEvent: findAllCommentsForEvent,
+    removeComment: removeComment
 };
